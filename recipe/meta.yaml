@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: 2136f78ffa77bee61adf54675713840a4637387ff7cd88fc911333b6fbc96476
+  sha256: d872802289755355fb8253823b23da8b718b6b81631a606583e403006a044633
 
 build:
   number: 0
