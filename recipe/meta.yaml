@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: 133e26033c877f62f37ec5b469f2fc40daddee9bfd89476fa258a6a44ffb4ea2
+  sha256: 3e907f7d2f8369cb20c08050985e00473176e8b5cde85ebda8f77e8d18135a2f
 
 build:
   number: 0
-
+ 
 requirements:
   build:
     - {{ compiler('fortran') }}  # [not win]
