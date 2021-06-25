@@ -5,14 +5,14 @@ package:
   name: {{ name|lower }}
   version: {{ version }}
 
-# source:
-#   url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-#   sha256: 92bd7169efa9b0c69049875a2e178a8533944cf6c89b567c72ee835581bd2d4e
-
 source:
-  git_url: https://github.com/openfast/openfast.git
-  git_rev: v{{ version }}
-  git_depth: 1
+  url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
+  sha256: bbbbee14966c3a585a10922fd9255994999081b93806493cb1004b2e09e2801f
+
+# source:
+#   git_url: https://github.com/openfast/openfast.git
+#   git_rev: v{{ version }}
+#   git_depth: 1
 
 build:
   number: 0
