@@ -1,5 +1,5 @@
 {% set name = "rosco" %}
-{% set version = "2.2.0" %}
+{% set version = "2.3.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: 92bd7169efa9b0c69049875a2e178a8533944cf6c89b567c72ee835581bd2d4e
+  sha256: bbbbee14966c3a585a10922fd9255994999081b93806493cb1004b2e09e2801f
 
 build:
-  number: 1
- 
+  number: 0
+
 requirements:
   build:
     - {{ compiler('fortran') }}  # [not win]
