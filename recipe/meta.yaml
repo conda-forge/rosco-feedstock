@@ -1,14 +1,19 @@
 {% set name = "rosco" %}
-{% set version = "2.2.0" %}
+{% set version = "2.3.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
-source:
-  url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: 92bd7169efa9b0c69049875a2e178a8533944cf6c89b567c72ee835581bd2d4e
+# source:
+#   url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
+#   sha256: 92bd7169efa9b0c69049875a2e178a8533944cf6c89b567c72ee835581bd2d4e
 
+source:
+  git_url: https://github.com/openfast/openfast.git
+  git_rev: v{{ version }}
+  git_depth: 1
+  
 build:
   number: 1
  
