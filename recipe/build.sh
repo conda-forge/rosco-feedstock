@@ -1,7 +1,9 @@
 #!/bin/bash
 
-mkdir build
-cd build 
+python setup.py install
+
+mkdir ROSCO/build
+cd ROSCO/build 
 
 cmake \
     -DCMAKE_Fortran_FLAGS="-ffree-line-length-0" \

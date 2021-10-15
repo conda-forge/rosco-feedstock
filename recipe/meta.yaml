@@ -1,36 +1,57 @@
 {% set name = "rosco" %}
-{% set version = "2.3.0" %}
+{% set version = "2.4.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: bbbbee14966c3a585a10922fd9255994999081b93806493cb1004b2e09e2801f
-
-# source:
-#   git_url: https://github.com/openfast/openfast.git
-#   git_rev: v{{ version }}
-#   git_depth: 1
+  url: https://github.com/nrel/rosco/.git
+  git_rev: v{{ version }}
+  git_depth: 1 # (Defaults to -1/not shallow)
 
 build:
   number: 0
- 
+
 requirements:
   build:
+    - python {{ python }}
     - {{ compiler('fortran') }}  # [not win]
     - {{ compiler('m2w64_fortran') }}  # [win]
     - make  # [not win]
     - cmake
+    - numpy
+    - setuptools
+    - pandas
+    - future
+    - scipy
+    - pyYAML
+    - wisdem
   host:
-    - m2w64-toolchain  # [win]
+    - python {{ python }}
+    - libblas
+    - libcblas
+    - liblapack
+    - libpython    # [win]
+  #   - numpy
+  #   - setuptools
+  run:
+    - python {{ python }}
+    - matplotlib
+    - numpy
+    - pytest
+    - pandas
+    - future
+    - scipy
+    - pyYAML
+    - wisdem
 
 test:
   commands:
-    - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT  # [not win]
-    - if not exist %LIBRARY_LIB%\libdiscon.dll exit 1  # [win]
-
+    - test -f ${PREFIX}/ROSCO/Install/lib/libdiscon$SHLIB_EXT  # [not win]
+    - if not exist %LIBRARY_LIB%\ROSCO\install\lib\libdiscon.dll exit 1  # [win]
+  imports:
+    - ROSCO_toolbox
 about:
   home: https://github.com/NREL/rosco
   license: Apache-2.0
