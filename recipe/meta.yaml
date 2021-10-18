@@ -6,9 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/nrel/rosco/.git
-  git_rev: v{{ version }}
-  git_depth: 1 # (Defaults to -1/not shallow)
+  url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
+  sha256: e6a36bc52ce7a13a8e53e2258d0823b84cd451e5cfd64eff40bc6ee861a90f82
 
 build:
   number: 0
