@@ -11,33 +11,30 @@ source:
 
 build:
   number: 0
+  skip: True  # [win and linux]
 
 requirements:
   build:
-    - python {{ python }}
     - {{ compiler('fortran') }}  # [not win]
     - {{ compiler('m2w64_fortran') }}  # [win]
     - make  # [not win]
     - cmake
+  host:
+    - libpython  # [win]
+    - python
     - numpy
     - setuptools
     - pandas
     - future
-    - scipy
     - pyYAML
-    - wisdem
-  host:
-    - python {{ python }}
-    - libblas
-    - libcblas
-    - liblapack
-    - libpython    # [win]
-  #   - numpy
-  #   - setuptools
-  run:
-    - python {{ python }}
+    - scipy
+    - pytest
     - matplotlib
-    - numpy
+    - wisdem
+  run:
+    - python
+    - matplotlib
+    - numpy 
     - pytest
     - pandas
     - future
@@ -47,8 +44,8 @@ requirements:
 
 test:
   commands:
-    - test -f ${PREFIX}/ROSCO/Install/lib/libdiscon$SHLIB_EXT  # [not win]
-    - if not exist %LIBRARY_LIB%\ROSCO\install\lib\libdiscon.dll exit 1  # [win]
+    - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT  # [not win]
+    - if not exist %LIBRARY_LIB%\libdiscon.dll exit 1  # [win]
   imports:
     - ROSCO_toolbox
 about:
