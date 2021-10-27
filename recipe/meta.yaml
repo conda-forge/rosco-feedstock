@@ -1,5 +1,5 @@
 {% set name = "rosco" %}
-{% set version = "2.3.0" %}
+{% set version = "2.4.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,16 +7,12 @@ package:
 
 source:
   url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: bbbbee14966c3a585a10922fd9255994999081b93806493cb1004b2e09e2801f
-
-# source:
-#   git_url: https://github.com/openfast/openfast.git
-#   git_rev: v{{ version }}
-#   git_depth: 1
+  sha256: e6a36bc52ce7a13a8e53e2258d0823b84cd451e5cfd64eff40bc6ee861a90f82
 
 build:
   number: 0
- 
+  skip: True  # [win and linux]
+
 requirements:
   build:
     - {{ compiler('fortran') }}  # [not win]
@@ -24,13 +20,34 @@ requirements:
     - make  # [not win]
     - cmake
   host:
-    - m2w64-toolchain  # [win]
+    - libpython  # [win]
+    - python
+    - numpy
+    - setuptools
+    - pandas
+    - future
+    - pyYAML
+    - scipy
+    - pytest
+    - matplotlib
+    - wisdem
+  run:
+    - python
+    - matplotlib
+    - numpy 
+    - pytest
+    - pandas
+    - future
+    - scipy
+    - pyYAML
+    - wisdem
 
 test:
   commands:
     - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT  # [not win]
     - if not exist %LIBRARY_LIB%\libdiscon.dll exit 1  # [win]
-
+  imports:
+    - ROSCO_toolbox
 about:
   home: https://github.com/NREL/rosco
   license: Apache-2.0
