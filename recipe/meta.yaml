@@ -1,5 +1,5 @@
 {% set name = "rosco" %}
-{% set version = "2.4.0" %}
+{% set version = "2.4.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: e6a36bc52ce7a13a8e53e2258d0823b84cd451e5cfd64eff40bc6ee861a90f82
+  sha256: 432c86f0db6a7c834777f078e74702b1b0091d5f3416ea7b7773c64d562d1c24
 
 build:
-  number: 1
-  skip: True  # [win and linux]
+  number: 0
+  skip: true  # [win and linux]
 
 requirements:
   build:
@@ -34,7 +34,7 @@ requirements:
   run:
     - python
     - matplotlib-base
-    - numpy 
+    - numpy
     - pytest
     - pandas
     - future
