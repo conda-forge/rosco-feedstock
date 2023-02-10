@@ -11,7 +11,7 @@ source:
 
 build:
   number: 0
-  skip: True  # [win and linux]
+  skip: true  # [win and linux]
 
 requirements:
   build:
@@ -38,7 +38,7 @@ requirements:
   run:
     - python
     - matplotlib
-    - numpy 
+    - numpy
     - pytest
     - pandas
     - future
