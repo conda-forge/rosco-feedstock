@@ -22,14 +22,14 @@ requirements:
     - cmake
   host:
     - libpython  # [win]
-    - python
-    - numpy
+    - python>=3.9
+    - numpy>=1.21
     - setuptools
     - pandas
     - future
     - pyYAML
     - scipy
-    - pytest
+    # - pytest
     - matplotlib
     - wisdem
     - control
@@ -37,10 +37,10 @@ requirements:
     - mpi4py
     - treon
   run:
-    - python
+    - python>=3.9
     - matplotlib
-    - numpy
-    - pytest
+    - numpy>=1.21
+    # - pytest
     - pandas
     - future
     - scipy
