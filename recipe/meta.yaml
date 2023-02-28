@@ -21,12 +21,12 @@ requirements:
     - cmake
   host:
     - libpython  # [win]
-    - python >=3.9
+    - python
     - setuptools
     - wisdem
     - control
   run:
-    - python >=3.9
+    - python
     - matplotlib
     - numpy >=1.22
     - pandas
