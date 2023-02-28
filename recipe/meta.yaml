@@ -14,21 +14,21 @@ build:
 
 requirements:
   build:
-    - {{ compiler('m2w64_fortran') }}  # [win]
-    - {{ compiler('vc') }}             # [win]
-    - {{ compiler('c') }}     # [win]
-    - {{ compiler('cxx') }}   # [win]
-    - {{ compiler('fortran') }}        # [not win]
-    - make  # [not win]
+    - {{ compiler('m2w64_fortran') }}   # [win]
+    - {{ compiler('vc') }}              # [win]
+    - {{ compiler('c') }}               # [win]
+    - {{ compiler('cxx') }}             # [win]
+    - {{ compiler('fortran') }}         # [not win]
+    - make                              # [not win]
     - cmake
   host:
-    - libpython  # [win]
+    - libpython                         # [win]
     - python
     - setuptools
   run:
     - python
     - matplotlib-base
-    - numpy >=1.22
+    - numpy
     - pandas
     - scipy
     - pyYAML
