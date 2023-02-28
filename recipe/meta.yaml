@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/rafmudaf/ROSCO/archive/refs/heads/main.zip
-  sha256: 8f4bbfd9fbb2b997a4a277f70239139f6076537cce228fa4695fe34aef79d732
+  sha256: d7b6b4ab7eaeb1d94aea5ed2bd9beddfaaaf76f2630c94fb238c613d8d35b409
 
 build:
   number: 0
