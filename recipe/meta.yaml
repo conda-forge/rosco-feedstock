@@ -6,8 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: ca1c1a6ac53e8220b107accccfb8b5299772c38b7c77cd8d2ba383e9825daeaa
+  url: https://github.com/rafmudaf/ROSCO/archive/refs/heads/main.zip
+  sha256: 8f4bbfd9fbb2b997a4a277f70239139f6076537cce228fa4695fe34aef79d732
 
 build:
   number: 0
