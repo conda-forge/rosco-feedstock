@@ -21,28 +21,18 @@ requirements:
     - cmake
   host:
     - libpython  # [win]
-    - python
-    - numpy
+    - python >=3.9
     - setuptools
-    - pandas
-    - future
-    - pyYAML
-    - scipy
-    - pytest
-    - matplotlib
     - wisdem
     - control
   run:
-    - python
+    - python >=3.9
     - matplotlib
-    - numpy
-    - pytest
+    - numpy >=1.22
     - pandas
-    - future
     - scipy
     - pyYAML
     - wisdem
-    - control
 
 test:
   commands:
