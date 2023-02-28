@@ -22,8 +22,6 @@ requirements:
     - libpython  # [win]
     - python
     - setuptools
-    - wisdem
-    - control
   run:
     - python
     - matplotlib-base
@@ -32,6 +30,7 @@ requirements:
     - scipy
     - pyYAML
     - wisdem
+    - control
 
 test:
   commands:
