@@ -11,8 +11,6 @@ source:
 
 build:
   number: 0
-  skip: True  # [py<38 and py>39]
-  # skip: True  # [py>39 and win]
 
 requirements:
   build:
@@ -29,7 +27,7 @@ requirements:
   run:
     - python
     - matplotlib-base
-    - numpy >=1.22
+    - numpy >=1.21
     - pandas
     - scipy
     - pyYAML
