@@ -27,7 +27,7 @@ requirements:
   run:
     - python
     - matplotlib-base
-    - numpy >=1.21
+    - numpy
     - pandas
     - scipy
     - pyYAML
