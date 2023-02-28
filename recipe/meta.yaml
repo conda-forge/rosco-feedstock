@@ -27,7 +27,7 @@ requirements:
     - control
   run:
     - python
-    - matplotlib
+    - matplotlib-base
     - numpy >=1.22
     - pandas
     - scipy
