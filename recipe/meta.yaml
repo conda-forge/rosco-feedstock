@@ -25,9 +25,6 @@ requirements:
     - setuptools
     - wisdem
     - control
-    - pyzmq
-    - mpi4py
-    - treon
   run:
     - python
     - matplotlib-base
