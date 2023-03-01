@@ -19,6 +19,7 @@ requirements:
     - {{ compiler('fortran') }}  # [not win]
     - {{ compiler('m2w64_fortran') }}  # [win]
     - {{ compiler('m2w64_c') }}   # [win]
+    - {{ compiler('vc') }}              # [win]
     - make  # [not win]
     - cmake
   host:
