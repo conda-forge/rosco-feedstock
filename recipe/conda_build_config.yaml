@@ -6,3 +6,4 @@ m2w64_fortran_compiler:  # [win]
 
 vc:      # [win]
   - 14   # [win]
+  - 9    # [win]
