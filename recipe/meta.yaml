@@ -11,7 +11,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [win and vc>9]
+  # skip: true  # [win and vc>9]
 
 
 requirements:
@@ -22,7 +22,7 @@ requirements:
     - make  # [not win]
     - cmake
   host:
-    - libpython  # [win]
+    # - libpython  # [win]
     - python
     - setuptools
   run:
