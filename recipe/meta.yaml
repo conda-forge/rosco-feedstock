@@ -22,8 +22,8 @@ requirements:
     - {{ compiler('vc') }}              # [win]
     - make  # [not win]
     - cmake
-    - vc =14   # [win]
     - vc =9  # [win]
+    - vc =14   # [win]
   host:
     # - libpython  # [win]
     - python
