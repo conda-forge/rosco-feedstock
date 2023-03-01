@@ -19,9 +19,7 @@ requirements:
     - {{ compiler('fortran') }}  # [not win]
     - {{ compiler('m2w64_fortran') }}  # [win]
     - {{ compiler('m2w64_c') }}   # [win]
-    - compiler_vc: # [win]
-      - 9           # [win]
-      - 14      # [win]
+    - {{ compiler('vc') }}              # [win]
     - make  # [not win]
     - cmake
   host:
@@ -36,7 +34,6 @@ requirements:
     - scipy
     - wisdem
     - control
-  run_requirements:
     - vc9runtime  # [win]
     - vc14runtime  # [win]
 
