@@ -22,7 +22,7 @@ requirements:
     - {{ compiler('vc') }}              # [win]
     - make  # [not win]
     - cmake
-    - vc =9  # [win]
+    # - vc =9  # [win]
     - vc =14   # [win]
   host:
     # - libpython  # [win]
@@ -34,8 +34,8 @@ requirements:
     - {{ pin_compatible('numpy') }}
     - pandas
     - scipy
-    - wisdem
-    - control
+    - wisdem >=3.5
+    # - control
 
 test:
   commands:
