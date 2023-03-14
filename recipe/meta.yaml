@@ -1,48 +1,41 @@
 {% set name = "rosco" %}
-{% set version = "2.6.0" %}
+{% set version = "2.7.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/nrel/rosco/archive/v{{ version }}.tar.gz
-  sha256: ca1c1a6ac53e8220b107accccfb8b5299772c38b7c77cd8d2ba383e9825daeaa
+  url: https://github.com/rafmudaf/ROSCO/archive/refs/heads/main.zip
+  sha256: d7b6b4ab7eaeb1d94aea5ed2bd9beddfaaaf76f2630c94fb238c613d8d35b409
 
 build:
   number: 0
-  skip: true  # [win and linux]
+  skip: true  # [win]
+
 
 requirements:
   build:
     - {{ compiler('fortran') }}  # [not win]
     - {{ compiler('m2w64_fortran') }}  # [win]
+    - {{ compiler('m2w64_c') }}   # [win]
+    - {{ compiler('vc') }}              # [win]
     - make  # [not win]
     - cmake
+    # - vc =9  # [win]
+    - vc =14   # [win]
   host:
-    - libpython  # [win]
+    # - libpython  # [win]
     - python
-    - numpy
     - setuptools
-    - pandas
-    - future
-    - pyYAML
-    - scipy
-    - pytest
-    - matplotlib
-    - wisdem
-    - control
   run:
     - python
-    - matplotlib
-    - numpy
-    - pytest
+    - matplotlib-base
+    - {{ pin_compatible('numpy') }}
     - pandas
-    - future
     - scipy
-    - pyYAML
-    - wisdem
-    - control
+    - wisdem >=3.5
+    # - control
 
 test:
   commands:
