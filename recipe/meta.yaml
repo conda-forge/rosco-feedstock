@@ -24,6 +24,7 @@ requirements:
     - cross-python_{{ target_platform }}      # [build_platform != target_platform]
     - make  # [not win]
     - cmake
+    - compilers # [osx]
     # - vc =9  # [win]
     # - vc =14   # [win]
   host:
