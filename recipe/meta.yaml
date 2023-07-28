@@ -12,6 +12,9 @@ source:
 build:
   number: 0
   skip: true  # [py<39]
+  detect_binary_files_with_prefix: False # [osx]
+  binary_relocation: False
+
 
 
 
