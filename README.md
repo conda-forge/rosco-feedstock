@@ -202,5 +202,6 @@ Feedstock Maintainers
 =====================
 
 * [@dzalkind](https://github.com/dzalkind/)
+* [@gbarter](https://github.com/gbarter/)
 * [@nikhar-abbas](https://github.com/nikhar-abbas/)
 
