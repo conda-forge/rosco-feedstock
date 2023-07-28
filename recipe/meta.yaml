@@ -1,29 +1,35 @@
 {% set name = "rosco" %}
-{% set version = "2.7.0" %}
+{% set version = "2.8.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/rafmudaf/ROSCO/archive/refs/heads/main.zip
-  sha256: d7b6b4ab7eaeb1d94aea5ed2bd9beddfaaaf76f2630c94fb238c613d8d35b409
+  url: https://github.com/NREL/ROSCO/archive/refs/tags/v2.8.0.tar.gz
+  sha256: 7a2e3a7bebdf6ee73884a9e3502f904cc3a3f1aa1bf672c223ecbaa041bfc48f
 
 build:
   number: 0
-  skip: true  # [win]
+  skip: true  # [py<39]
+  detect_binary_files_with_prefix: False  # [osx]
+  binary_relocation: False  # [osx]
+
+
 
 
 requirements:
   build:
-    - {{ compiler('fortran') }}  # [not win]
-    - {{ compiler('m2w64_fortran') }}  # [win]
+    - {{ compiler('fortran') }}
+    # - {{ compiler('m2w64_fortran') }}  # [win]
     - {{ compiler('m2w64_c') }}   # [win]
-    - {{ compiler('vc') }}              # [win]
+    # - {{ compiler('vc') }}              # [win]
+    - cross-python_{{ target_platform }}      # [build_platform != target_platform]
     - make  # [not win]
     - cmake
+    # - compilers  # [not win]
     # - vc =9  # [win]
-    - vc =14   # [win]
+    # - vc =14   # [win]
   host:
     # - libpython  # [win]
     - python
@@ -55,3 +61,4 @@ extra:
   recipe-maintainers:
     - nikhar-abbas
     - dzalkind
+    - gbarter
