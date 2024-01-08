@@ -1,0 +1,50 @@
+diff --git a/setup.py b/setup.py
+index bda4a7c..d681ed6 100644
+--- a/setup.py
++++ b/setup.py
+@@ -63,17 +63,34 @@ class CMakeBuildExt(build_ext):
+             except OSError:
+                 raise RuntimeError('Cannot find CMake executable')
+             
+-            # Refresh build directory
+-            #os.makedirs(localdir, exist_ok=True)
+-
+-            cmake_args = ['-DBUILD_SHARED_LIBS=OFF']
+-            cmake_args += ['-DCMAKE_Fortran_FLAGS=-ffree-line-length-0']
+-            cmake_args += ['-DCMAKE_INSTALL_PREFIX={}'.format(this_directory)]
+-
+-            # Help Cmake find libraries in python locations
+-            python_root = os.path.dirname( os.path.dirname( sysconfig.get_path('stdlib') ) )
+-            user_root = sysconfig.get_config_var("userbase")
+-            cmake_args += [f'-DCMAKE_PREFIX_PATH={python_root}']
++            # Grab user-specified CMAKE_ARGS, which can be helpful, but is especially needed by conda packaging
++            if "CMAKE_ARGS" in os.environ:
++                cmake_args = [m for m in os.environ["CMAKE_ARGS"].split()]
++                user_flag = True
++            else:
++                user_flag = False
++                cmake_args = []
++
++            # Always build shared libraries
++            cmake_args += ['-DBUILD_SHARED_LIBS=ON']
++
++            # Append fortran flags
++            if not user_flag or "-DCMAKE_INSTALL_PREFIX" not in os.environ["CMAKE_ARGS"]:
++                cmake_args += ['-DCMAKE_Fortran_FLAGS=-ffree-line-length-0']
++            else:
++                for im, m in enumerate(cmake_args):
++                    if m.find("-DCMAKE_Fortran_FLAGS") >= 0:
++                        cmake_args[im] += ' -ffree-line-length-0' 
++
++            # Set if unset
++            if not user_flag or "-DCMAKE_INSTALL_PREFIX" not in os.environ["CMAKE_ARGS"]:
++                cmake_args += [f'-DCMAKE_INSTALL_PREFIX={this_directory}']
++
++            # Set if unset
++            if not user_flag or "-DCMAKE_PREFIX_PATH" not in os.environ["CMAKE_ARGS"]:
++                python_root = os.path.dirname( os.path.dirname( sysconfig.get_path('stdlib') ) )
++                #user_root = sysconfig.get_config_var("userbase")
++                cmake_args += [f'-DCMAKE_PREFIX_PATH={python_root}']
+ 
+             if platform.system() == 'Windows':
+                 if not "FC" in os.environ:
