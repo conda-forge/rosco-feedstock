@@ -17,7 +17,7 @@ build:
   #detect_binary_files_with_prefix: False  # [osx]
   #binary_relocation: False  # [osx]
   script:
-    - set CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=$%LIBRARY_PREFIX% -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON -DCMAKE_FIND_FRAMEWORK=NEVER -DCMAKE_FIND_APPBUNDLE=NEVER"  # [ win ]
+    - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$%LIBRARY_PREFIX% -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON -DCMAKE_FIND_FRAMEWORK=NEVER -DCMAKE_FIND_APPBUNDLE=NEVER"  # [ win ]
     - {{ PYTHON }} -m pip install . --no-deps -vv
 
 
