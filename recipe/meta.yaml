@@ -18,7 +18,7 @@ build:
   #binary_relocation: False  # [osx]
   script:
     # Want to use the conda pkg-config, not the mingw one
-    - del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*  # [win]
+    #- del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*  # [win]
     - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"  # [ win ]
     - {{ PYTHON }} -m pip install . --no-deps -vv
 
