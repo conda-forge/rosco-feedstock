@@ -17,32 +17,30 @@ build:
   #detect_binary_files_with_prefix: False  # [osx]
   #binary_relocation: False  # [osx]
   script:
-    - set "CC=clang-cl"   # [ win ]
-    - set "CXX=clang-cl"  # [ win ]
-    - set "FC=flang-new"  # [ win ]
+    # Want to use the conda pkg-config, not the mingw one
+    - del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*  # [win]
     - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"  # [ win ]
     - {{ PYTHON }} -m pip install . --no-deps -vv
 
 
 requirements:
   build:
-    - {{ compiler('fortran') }}           # [not win]
-    - {{ compiler('c') }}                 
+    - {{ compiler('fortran') }}
+    - {{ compiler('c') }}                 # [not win]
+    - {{ compiler('m2w64_c') }}           # [win]
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - python                              # [build_platform != target_platform]
     - cmake
-    - make
+    - make  # [ not win ]
     - pkg-config
-    - zeromq
-    - clang                                  # [win]
-    - flang                                  # [win]
-    - lld                                    # [win]    
+    # The m2w64 linker and pkg-config is too fragile and frustrating to get it to work with zmq
+    # Maybe when flang gets more stable this will work on windows.  For now, the windows build just won't have it
+    - zeromq   # [ not win ]
   host:
     - python
     - setuptools
     - pip
-    - zeromq
-    - compiler-rt                            # [win]
+    - zeromq  # [ not win ]
   run:
     - control
     - matplotlib-base
