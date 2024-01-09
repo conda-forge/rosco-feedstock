@@ -18,27 +18,32 @@ build:
   #binary_relocation: False  # [osx]
   script:
     # Want to use the conda pkg-config, not the mingw one
-    #- del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*  # [win]
     - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"  # [ win ]
     - {{ PYTHON }} -m pip install . --no-deps -vv
 
 
 requirements:
   build:
-    - {{ compiler('fortran') }}
-    - {{ compiler('c') }}                 # [not win]
-    - {{ compiler('m2w64_c') }}           # [win]
+    - {{ compiler('fortran') }}           # [not win]
+    - {{ compiler('c') }}                 
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - python                              # [build_platform != target_platform]
-    - cmake
-    - make  # [ not win ]
-    - pkg-config
-    - zeromq
+    - cmake                               # [build_platform != target_platform]
+    - make                                # [ not win ]
+    - pkg-config                          # [build_platform != target_platform]
+    - zeromq                              # [build_platform != target_platform]
+    # pythran code needs clang-cl on windows
+    - clang                                  # [win]
+    # use flang as fortran compiler on windows (uses clang driver)
+    - flang                                  # [win]
+    # use llvm linker for both of the above
+    - lld                                    # [win]    
   host:
     - python
     - setuptools
     - pip
     - zeromq
+    - compiler-rt                            # [win]
   run:
     - control
     - matplotlib-base
