@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/NREL/ROSCO/archive/refs/tags/v2.8.0.tar.gz
+  url: https://github.com/NREL/ROSCO/archive/v{{ version }}.tar.gz
   sha256: 98ba68e9388156c77473292fd058554160aaf4e2eb3a4db1fa47b18c7aff92c2
   patches:
     - setup.patch
