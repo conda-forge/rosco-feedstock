@@ -17,9 +17,9 @@ build:
   #detect_binary_files_with_prefix: False  # [osx]
   #binary_relocation: False  # [osx]
   script:
+    - {{ PYTHON }} -m pip install . --no-deps -vv
     #- export CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON -DCMAKE_FIND_FRAMEWORK=NEVER -DCMAKE_FIND_APPBUNDLE=NEVER"  # [ not win ]
     #- set CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=$%LIBRARY_PREFIX% -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON -DCMAKE_FIND_FRAMEWORK=NEVER -DCMAKE_FIND_APPBUNDLE=NEVER"  # [ win ]
-    - {{ PYTHON }} -m pip install . --no-deps -vv
 
 
 requirements:
@@ -30,13 +30,15 @@ requirements:
     - {{ compiler('m2w64_c') }}   # [win]
     - cross-python_{{ target_platform }}      # [build_platform != target_platform]
     - cmake
+    - pip
     - pkg-config
     - python
-    - pip
+    - python-build
     - wheel
   host:
     - python
     - setuptools
+    - pip
   run:
     - control
     - matplotlib-base
