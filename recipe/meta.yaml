@@ -33,11 +33,12 @@ requirements:
     - cmake
     - make  # [ not win ]
     - pkg-config
+    - zeromq
   host:
     - python
     - setuptools
     - pip
-    - pyzmq
+    - zeromq
   run:
     - control
     - matplotlib-base
@@ -45,7 +46,7 @@ requirements:
     - pyYAML
     - pyparsing
     - python
-    - pyzmq
+    - zeromq
     - scipy
     - wisdem >=3.5
     - {{ pin_compatible('numpy') }}
