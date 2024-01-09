@@ -17,7 +17,9 @@ build:
   #detect_binary_files_with_prefix: False  # [osx]
   #binary_relocation: False  # [osx]
   script:
-    # Want to use the conda pkg-config, not the mingw one
+    - set "CC=clang-cl"  # [ win ]
+    - set "CXX=clang-cl"  # [ win ]
+    = set "FC=flang-new"  # [ win ]
     - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"  # [ win ]
     - {{ PYTHON }} -m pip install . --no-deps -vv
 
@@ -28,15 +30,12 @@ requirements:
     - {{ compiler('c') }}                 
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - python                              # [build_platform != target_platform]
-    - cmake                               # [build_platform != target_platform]
-    - make                                # [ not win ]
-    - pkg-config                          # [build_platform != target_platform]
-    - zeromq                              # [build_platform != target_platform]
-    # pythran code needs clang-cl on windows
+    - cmake
+    - make
+    - pkg-config
+    - zeromq
     - clang                                  # [win]
-    # use flang as fortran compiler on windows (uses clang driver)
     - flang                                  # [win]
-    # use llvm linker for both of the above
     - lld                                    # [win]    
   host:
     - python
