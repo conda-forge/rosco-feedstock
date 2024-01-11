@@ -646,10 +646,10 @@ index ed0cf68..3260258 100644
  
  [project]
 diff --git a/rosco/__init__.py b/rosco/__init__.py
-index e69de29..040a848 100644
+index e69de29..c0bd053 100644
 --- a/rosco/__init__.py
 +++ b/rosco/__init__.py
-@@ -0,0 +1,30 @@
+@@ -0,0 +1,32 @@
 +import platform
 +import os
 +import sysconfig
@@ -665,8 +665,10 @@ index e69de29..040a848 100644
 +libname = "libdiscon"
 +
 +lib_path = [os.path.join(rosco_dir, "lib", libname+lib_ext), # pip installs (regular and editable)
-+            os.path.join(rosco_dir, "..", "..", "local", "lib", libname+lib_ext), # WEIS library
++            os.path.join(os.path.dirname( os.path.dirname( rosco_dir )), "local", "lib", libname+lib_ext), # WEIS library
 +            os.path.join(os.path.dirname( sysconfig.get_path('stdlib') ), libname+lib_ext), # conda installs
++            os.path.join(os.path.dirname( sysconfig.get_path('stdlib') ), "lib", libname+lib_ext), # conda installs
++            os.path.join(os.path.dirname( sysconfig.get_path('stdlib') ), "Library", "lib", libname+lib_ext), # conda installs
 +            os.path.join( sysconfig.get_path('platlib'), "rosco", "lib", libname+lib_ext), # system-wide pip installs
 +            os.path.join( sysconfig.get_config_var("userbase"), "lib", "python", "site-packages", "rosco", "lib", libname+lib_ext), # system wide local
 +            ]

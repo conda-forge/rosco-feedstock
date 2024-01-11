@@ -58,9 +58,7 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT  # [not win]
-    # This should work, but LIBRARY_LIB seems to get changed during the build processgit
-    #- if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\lib\\libdiscon.dll exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1  # [win]
   imports:
     - rosco
 about:
