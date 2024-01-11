@@ -31,6 +31,7 @@ requirements:
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - python                              # [build_platform != target_platform]
     - cmake
+    - cmake-build-extension
     - make  # [ not win ]
     - pkg-config
     # The m2w64 linker and pkg-config is too fragile and frustrating to get it to work with zmq
@@ -39,6 +40,7 @@ requirements:
   host:
     - python
     - setuptools
+    - cmake-build-extension
     - pip
     - zeromq  # [ not win ]
   run:

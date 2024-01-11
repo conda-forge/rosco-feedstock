@@ -1,11 +1,969 @@
+diff --git a/Examples/04_simple_sim.py b/Examples/04_simple_sim.py
+index 6e1c469..a19a2cc 100644
+--- a/Examples/04_simple_sim.py
++++ b/Examples/04_simple_sim.py
+@@ -17,8 +17,9 @@ Notes - You will need to have a compiled controller in ROSCO, and
+ # Python modules
+ import matplotlib.pyplot as plt 
+ import numpy as np
+-import os, platform
++import os
+ # ROSCO toolbox modules 
++from rosco import discon_lib_path as lib_name
+ from rosco.toolbox import controller as ROSCO_controller
+ from rosco.toolbox import turbine as ROSCO_turbine
+ from rosco.toolbox import sim as ROSCO_sim
+@@ -43,14 +44,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ # # Load turbine model from saved pickle
+ turbine         = ROSCO_turbine.Turbine
+ turbine         = turbine.load(os.path.join(example_out_dir,'01_NREL5MW_saved.p'))
+diff --git a/Examples/05_openfast_sim.py b/Examples/05_openfast_sim.py
+index c9e9feb..3a45d40 100644
+--- a/Examples/05_openfast_sim.py
++++ b/Examples/05_openfast_sim.py
+@@ -11,10 +11,10 @@ In this example:
+ Note - you will need to have a compiled controller in ROSCO/build/ 
+ '''
+ # Python Modules
+-import yaml
++#import yaml
+ import os
+-import numpy as np
+-import matplotlib.pyplot as plt
++#import numpy as np
++#import matplotlib.pyplot as plt
+ # ROSCO toolbox modules 
+ from rosco.toolbox import controller as ROSCO_controller
+ from rosco.toolbox import turbine as ROSCO_turbine
+diff --git a/Examples/07_openfast_outputs.py b/Examples/07_openfast_outputs.py
+index 7d34c04..ed19bc6 100644
+--- a/Examples/07_openfast_outputs.py
++++ b/Examples/07_openfast_outputs.py
+@@ -12,7 +12,7 @@ Note: need to run openfast model in 'Test_Cases/5MW_Land_DLL_WTurb/' to plot
+ '''
+ 
+ # Python Modules
+-import numpy as np
++#import numpy as np
+ import matplotlib.pyplot as plt 
+ # ROSCO toolbox modules 
+ from rosco.toolbox.ofTools.fast_io import output_processing
+diff --git a/Examples/12_tune_ipc.py b/Examples/12_tune_ipc.py
+index f334720..6bb5b9e 100644
+--- a/Examples/12_tune_ipc.py
++++ b/Examples/12_tune_ipc.py
+@@ -10,7 +10,7 @@ In this example:
+ 
+ '''
+ # Python Modules
+-import os, platform
++import os
+ import matplotlib.pyplot as plt
+ 
+ # ROSCO toolbox modules 
+diff --git a/Examples/14_open_loop_control.py b/Examples/14_open_loop_control.py
+index 608f86b..862b630 100644
+--- a/Examples/14_open_loop_control.py
++++ b/Examples/14_open_loop_control.py
+@@ -11,11 +11,12 @@ In this example:
+ 
+ '''
+ # Python Modules
+-import yaml, os, platform
++import os
+ import numpy as np
+ import matplotlib.pyplot as plt
+ 
+ # ROSCO toolbox modules 
++from rosco import discon_lib_path
+ from rosco.toolbox import controller as ROSCO_controller
+ from rosco.toolbox import turbine as ROSCO_turbine
+ from rosco.toolbox import utilities as ROSCO_utilities
+@@ -89,17 +90,8 @@ param_file = os.path.join(this_dir,'DISCON.IN')   # This must be named DISCON.IN
+ ROSCO_utilities.write_DISCON(turbine,controller,param_file=param_file, txt_filename=path_params['rotor_performance_filename'])
+ 
+ ### Run OpenFAST using aeroelasticse tools
+-
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-rosco_dll = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ case_inputs = {}
+-case_inputs[('ServoDyn','DLL_FileName')] = {'vals': [rosco_dll], 'group': 0}
++case_inputs[('ServoDyn','DLL_FileName')] = {'vals': [discon_lib_path], 'group': 0}
+ 
+ # Apply all discon variables as case inputs
+ discon_vt = ROSCO_utilities.DISCON_dict(
+diff --git a/Examples/16_external_dll.py b/Examples/16_external_dll.py
+index 909b1c5..cb79ab0 100644
+--- a/Examples/16_external_dll.py
++++ b/Examples/16_external_dll.py
+@@ -8,6 +8,7 @@ IEA-15MW will call NREL-5MW controller and read control inputs
+ '''
+ 
+ import os, platform
++from rosco import discon_lib_path as lib_name
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+ import shutil
+@@ -19,14 +20,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ 
+ def main():
+     
+diff --git a/Examples/17a_zeromq_simple.py b/Examples/17a_zeromq_simple.py
+index 81a5854..2ccae2b 100644
+--- a/Examples/17a_zeromq_simple.py
++++ b/Examples/17a_zeromq_simple.py
+@@ -8,9 +8,9 @@ one could call ROSCO from OpenFAST, and communicate with ZeroMQ through that.
+ '''
+ 
+ 
+-import platform
+ import os
+ import matplotlib.pyplot as plt
++from rosco import discon_lib_path
+ from rosco.toolbox.inputs.validation import load_rosco_yaml
+ from rosco.toolbox.utilities import write_DISCON
+ from rosco.toolbox import control_interface as ROSCO_ci
+@@ -32,14 +32,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ def run_zmq(logfile=None):
+     # Start the server at the following address
+     network_address = "tcp://*:5555"
+@@ -118,7 +110,7 @@ def sim_rosco():
+ 
+     # Load controller library
+     controller_int = ROSCO_ci.ControllerInterface(
+-        lib_name, 
++        discon_lib_path, 
+         param_filename=param_filename, 
+         sim_name=os.path.join(sim_dir,'sim-zmq')
+         )
+diff --git a/Examples/18_pitch_offsets.py b/Examples/18_pitch_offsets.py
+index 98700de..74f4220 100644
+--- a/Examples/18_pitch_offsets.py
++++ b/Examples/18_pitch_offsets.py
+@@ -7,7 +7,7 @@ Set up and run simulation with pitch offsets, check outputs
+ 
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+ from rosco.toolbox.ofTools.fast_io import output_processing
+@@ -20,14 +20,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ 
+ def main():
+ 
+diff --git a/Examples/20_active_wake_control.py b/Examples/20_active_wake_control.py
+index 90b97d2..aa936a9 100644
+--- a/Examples/20_active_wake_control.py
++++ b/Examples/20_active_wake_control.py
+@@ -153,12 +153,12 @@ References:
+ [2] - Frederik, Joeri A., et al. "The helix approach: Using dynamic individual pitch control to enhance wake mixing in wind farms." Wind Energy 23.8 (2020): 1739-1751.
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+-from rosco.toolbox.ofTools.fast_io import output_processing
+-from rosco.toolbox.utilities import read_DISCON, DISCON_dict
+-import numpy as np
++#from rosco.toolbox.ofTools.fast_io import output_processing
++from rosco.toolbox.utilities import read_DISCON #, DISCON_dict
++#import numpy as np
+ 
+ # Choose your implementation method
+ AWC_Mode 			= 1 		# 1 for SNL implementation, 2 for Coleman Transformation implementation
+@@ -170,14 +170,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ 
+ 
+ def main():
+diff --git a/Examples/21_optional_inputs.py b/Examples/21_optional_inputs.py
+index 3bb8889..17b4f90 100644
+--- a/Examples/21_optional_inputs.py
++++ b/Examples/21_optional_inputs.py
+@@ -4,12 +4,12 @@ Test and demonstrate update_discon_version() function for converting an old ROSC
+ to the current version
+ '''
+ 
+-import os, platform
++import os
++from rosco import discon_lib_path
+ from rosco.toolbox import control_interface as ROSCO_ci
+-from rosco.toolbox import sim as ROSCO_sim
++#from rosco.toolbox import sim as ROSCO_sim
+ from rosco.toolbox import turbine as ROSCO_turbine
+-import numpy as np
+-
++#import numpy as np
+ 
+ #directories
+ this_dir            = os.path.dirname(os.path.abspath(__file__))
+@@ -18,15 +18,6 @@ example_out_dir     = os.path.join(this_dir,'examples_out')
+ example_in_dir      = os.path.join(this_dir,'example_inputs')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-rosco_dll = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+-
+ 
+ def main():
+ 
+@@ -42,7 +33,9 @@ def main():
+ 
+     avi_fail = []
+     for param_filename in param_filenames:
+-        controller_int = ROSCO_ci.ControllerInterface(rosco_dll,param_filename=param_filename,sim_name='sim1')
++        controller_int = ROSCO_ci.ControllerInterface(discon_lib_path,
++                                                      param_filename=param_filename,
++                                                      sim_name='sim1')
+         controller_int.kill_discon()
+         avi_fail.append(controller_int.aviFAIL.value)
+ 
+diff --git a/Examples/22_cable_control.py b/Examples/22_cable_control.py
+index c56ee9d..ce9a85b 100644
+--- a/Examples/22_cable_control.py
++++ b/Examples/22_cable_control.py
+@@ -7,7 +7,7 @@ Set up and run simulation with pitch offsets, check outputs
+ 
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+ from rosco.toolbox.ofTools.fast_io import output_processing
+@@ -149,4 +149,4 @@ def main():
+ 
+ 
+ if __name__=="__main__":
+-    main()
+\ No newline at end of file
++    main()
+diff --git a/Examples/23_structural_control.py b/Examples/23_structural_control.py
+index 7034c5c..6302290 100644
+--- a/Examples/23_structural_control.py
++++ b/Examples/23_structural_control.py
+@@ -7,10 +7,10 @@ Set up and run simulation with pitch offsets, check outputs
+ 
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+-import numpy as np
++#import numpy as np
+ from rosco.toolbox.ofTools.fast_io.FAST_reader import InputReader_OpenFAST
+ from rosco.toolbox.inputs.validation import load_rosco_yaml
+ from rosco.toolbox.controller import OpenLoopControl
+@@ -35,15 +35,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+-
+ 
+ def main():
+ 
+diff --git a/Examples/24_floating_feedback.py b/Examples/24_floating_feedback.py
+index 0010700..7da30c7 100644
+--- a/Examples/24_floating_feedback.py
++++ b/Examples/24_floating_feedback.py
+@@ -12,13 +12,13 @@ Floating feedback methods available in ROSCO/ROSCO_Toolbox
+ 
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+ import numpy as np
+-from rosco.toolbox.ofTools.fast_io.FAST_reader import InputReader_OpenFAST
+-from rosco.toolbox.inputs.validation import load_rosco_yaml
+-from rosco.toolbox.controller import OpenLoopControl
++#from rosco.toolbox.ofTools.fast_io.FAST_reader import InputReader_OpenFAST
++#from rosco.toolbox.inputs.validation import load_rosco_yaml
++#from rosco.toolbox.controller import OpenLoopControl
+ from rosco.toolbox.tune import yaml_to_objs
+ from rosco.toolbox.utilities import write_DISCON, read_DISCON
+ from rosco.toolbox import controller as ROSCO_controller
+@@ -33,15 +33,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+-
+ def main():
+ 
+     # Input yaml and output directory
+diff --git a/Examples/25_rotor_position_control.py b/Examples/25_rotor_position_control.py
+index 58b24f4..fe1abef 100644
+--- a/Examples/25_rotor_position_control.py
++++ b/Examples/25_rotor_position_control.py
+@@ -7,13 +7,13 @@ Run a steady simulation, use the azimuth output as an input to the next steady s
+ 
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+ from rosco.toolbox.ofTools.fast_io import output_processing
+ from rosco.toolbox.controller import OpenLoopControl
+ import numpy as np
+-import pandas as pd
++#import pandas as pd
+ import matplotlib.pyplot as plt
+ 
+ 
+@@ -23,14 +23,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ 
+ def main():
+ 
+diff --git a/Examples/26_marine_hydro.py b/Examples/26_marine_hydro.py
+index 595249b..6773482 100644
+--- a/Examples/26_marine_hydro.py
++++ b/Examples/26_marine_hydro.py
+@@ -6,15 +6,14 @@ Run openfast with ROSCO and a MHK turbine
+ 
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+-from rosco.toolbox.ofTools.fast_io import output_processing
+-import numpy as np
+-from rosco.toolbox.ofTools.fast_io.FAST_reader import InputReader_OpenFAST
+-from rosco.toolbox.inputs.validation import load_rosco_yaml
+-import matplotlib.pyplot as plt
+-from rosco.toolbox.controller import OpenLoopControl
++#from rosco.toolbox.ofTools.fast_io import output_processing
++#from rosco.toolbox.ofTools.fast_io.FAST_reader import InputReader_OpenFAST
++#from rosco.toolbox.inputs.validation import load_rosco_yaml
++#import matplotlib.pyplot as plt
++#from rosco.toolbox.controller import OpenLoopControl
+ 
+ '''
+ Run MHK turbine in OpenFAST with ROSCO torque controller
+@@ -83,4 +82,4 @@ def main():
+ 
+ 
+ if __name__=="__main__":
+-    main()
+\ No newline at end of file
++    main()
+diff --git a/Examples/27_power_ref_control.py b/Examples/27_power_ref_control.py
+index 12d253d..ebeba3b 100644
+--- a/Examples/27_power_ref_control.py
++++ b/Examples/27_power_ref_control.py
+@@ -8,12 +8,13 @@ Demonstrate a simulation with a generator reference speed that changes with esti
+ 
+ '''
+ 
+-import os, platform
++import os
++from rosco import discon_lib_path
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+ from rosco.toolbox.tune import yaml_to_objs
+ import numpy as np
+-from rosco.toolbox.inputs.validation import load_rosco_yaml
++#from rosco.toolbox.inputs.validation import load_rosco_yaml
+ import matplotlib.pyplot as plt
+ 
+ '''
+@@ -29,14 +30,7 @@ this_dir            = os.path.dirname(os.path.abspath(__file__))
+ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+-
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-lib_name = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
++lib_name = discon_lib_path
+ 
+ 
+ def main():
+diff --git a/Examples/28_tower_resonance.py b/Examples/28_tower_resonance.py
+index a06e66b..912e408 100644
+--- a/Examples/28_tower_resonance.py
++++ b/Examples/28_tower_resonance.py
+@@ -7,10 +7,10 @@ Set up and run simulation with tower resonance avoidance
+ 
+ '''
+ 
+-import os, platform
++import os
+ from rosco.toolbox.ofTools.case_gen.run_FAST import run_FAST_ROSCO
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+-from rosco.toolbox.ofTools.fast_io import output_processing
++#from rosco.toolbox.ofTools.fast_io import output_processing
+ from rosco.toolbox.ofTools.fast_io.FAST_reader import InputReader_OpenFAST
+ from rosco.toolbox.inputs.validation import load_rosco_yaml
+ 
+@@ -25,14 +25,6 @@ rosco_dir           = os.path.dirname(this_dir)
+ example_out_dir     = os.path.join(this_dir,'examples_out')
+ os.makedirs(example_out_dir,exist_ok=True)
+ 
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
+-libname = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+ 
+ def main():
+ 
+diff --git a/Examples/ROSCO_walkthrough.ipynb b/Examples/ROSCO_walkthrough.ipynb
+index 9a26288..6988320 100644
+--- a/Examples/ROSCO_walkthrough.ipynb
++++ b/Examples/ROSCO_walkthrough.ipynb
+@@ -47,6 +47,7 @@
+     "import numpy as np\n",
+     "\n",
+     "# ROSCO Modules\n",
++    "from rosco import discon_lib_path as lib_name\n",
+     "from rosco.toolbox import turbine as ROSCO_turbine\n",
+     "from rosco.toolbox import utilities as ROSCO_utilities\n",
+     "from rosco.toolbox import sim as ROSCO_sim\n",
+@@ -571,16 +572,6 @@
+     }
+    ],
+    "source": [
+-    "# Specify controller dynamic library path and name\n",
+-    "\n",
+-    "if platform.system() == 'Windows':\n",
+-    "    ext = 'dll'\n",
+-    "elif platform.system() == 'Darwin':\n",
+-    "    ext = 'dylib'\n",
+-    "else:\n",
+-    "    ext = 'so'\n",
+-    "                \n",
+-    "lib_name = (f'../lib/libdiscon.{ext}')\n",
+     "\n",
+     "# Load the simulator and controller interface\n",
+     "controller_int = ROSCO_ci.ControllerInterface(lib_name,param_filename=param_file)\n",
+@@ -752,9 +743,9 @@
+  "metadata": {
+   "celltoolbar": "Slideshow",
+   "kernelspec": {
+-   "display_name": "rosco-env",
++   "display_name": "Python 3 (ipykernel)",
+    "language": "python",
+-   "name": "rosco-env"
++   "name": "python3"
+   },
+   "language_info": {
+    "codemirror_mode": {
+@@ -766,7 +757,7 @@
+    "name": "python",
+    "nbconvert_exporter": "python",
+    "pygments_lexer": "ipython3",
+-   "version": "3.9.16"
++   "version": "3.11.7"
+   }
+  },
+  "nbformat": 4,
+diff --git a/Examples/Test_Cases/5MW_Land_Simulink/NRELOffshrBsline5MW_Onshore_ServoDyn.dat b/Examples/Test_Cases/5MW_Land_Simulink/NRELOffshrBsline5MW_Onshore_ServoDyn.dat
+index 0cd2638..3c23595 100644
+--- a/Examples/Test_Cases/5MW_Land_Simulink/NRELOffshrBsline5MW_Onshore_ServoDyn.dat
++++ b/Examples/Test_Cases/5MW_Land_Simulink/NRELOffshrBsline5MW_Onshore_ServoDyn.dat
+@@ -74,7 +74,7 @@ True          GenTiStp     - Method to stop the generator {T: timed using TimGen
+ ---------------------- CABLE CONTROL -------------------------------------------
+           0   CCmode       - Cable control mode {0: none, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
+ ---------------------- BLADED INTERFACE ---------------------------------------- [used only with Bladed Interface]
+-"../../../lib/libdiscon.dylib"    DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
++"../../../lib/libdiscon.so"    DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
+ "../NREL-5MW/DISCON.IN"    DLL_InFile   - Name of input file sent to the DLL (-) [used only with Bladed Interface]
+ "DISCON"      DLL_ProcName - Name of procedure in DLL to be called (-) [case sensitive; used only with DLL Interface]
+ "default"     DLL_DT       - Communication interval for dynamic library (s) (or "default") [used only with Bladed Interface]
+diff --git a/Examples/Test_Cases/BAR_10/BAR_10_ServoDyn.dat b/Examples/Test_Cases/BAR_10/BAR_10_ServoDyn.dat
+index 9c06419..d095227 100644
+--- a/Examples/Test_Cases/BAR_10/BAR_10_ServoDyn.dat
++++ b/Examples/Test_Cases/BAR_10/BAR_10_ServoDyn.dat
+@@ -74,7 +74,7 @@ True                   GenTiStp    - Method to stop the generator {T: timed usin
+ ---------------------- CABLE CONTROL -------------------------------------------
+           0   CCmode       - Cable control mode {0: none, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
+ ---------------------- BLADED INTERFACE ---------------------------------------- [used only with Bladed Interface]
+-"../../../lib/libdiscon.dylib" DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
++"../../../lib/libdiscon.so" DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
+ "BAR_10_DISCON.IN"     DLL_InFile  - Name of input file sent to the DLL (-) [used only with Bladed Interface]
+ "DISCON"               DLL_ProcName - Name of procedure in DLL to be called (-) [case sensitive; used only with DLL Interface]
+ "default"              DLL_DT      - Communication interval for dynamic library (s) (or "default") [used only with Bladed Interface]
+diff --git a/Examples/Test_Cases/update_libdiscon_extension.py b/Examples/Test_Cases/update_libdiscon_extension.py
+index d85cb51..f11d18a 100644
+--- a/Examples/Test_Cases/update_libdiscon_extension.py
++++ b/Examples/Test_Cases/update_libdiscon_extension.py
+@@ -1,13 +1,6 @@
+ import glob
+-import platform
+ import os
+-
+-if platform.system() == 'Windows':
+-    sfx = 'dll'
+-elif platform.system() == 'Darwin':
+-    sfx = 'dylib'
+-else:
+-    sfx = 'so'
++from rosco import discon_lib_path
+ 
+ if __name__ == "__main__":
+     this_dir   = os.path.dirname(os.path.abspath(__file__))
+@@ -21,5 +14,8 @@ if __name__ == "__main__":
+         # Write correction
+         with open(ifile, "w") as f:
+             for line in lines:
+-                f.write(line.replace('libdiscon.so', f'libdiscon.{sfx}'))
++                if line.find("DLL_FileName") >= 0:
++                    f.write(f"\"{discon_lib_path}\"    DLL_FileName - Name/location of the dynamic library (.dll [Windows] or .so [Linux]) in the Bladed-DLL format (-) [used only with Bladed Interface]\n")
++                else:
++                    f.write(line)
+                 
+diff --git a/environment.yml b/environment.yml
+index fea8fbc..ddc3500 100644
+--- a/environment.yml
++++ b/environment.yml
+@@ -4,7 +4,10 @@ channels:
+ 
+ dependencies:
+   - cmake
++  - cmake-build-extension
+   - control
++  - make
++  - ninja
+   - matplotlib
+   - numpy
+   - pandas
+diff --git a/pyproject.toml b/pyproject.toml
+index ed0cf68..3260258 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,5 +1,5 @@
+ [build-system]
+-requires = ["setuptools", "cmake", "numpy", "wheel", "pyzmq"]
++requires = ["setuptools", "cmake", "numpy", "wheel", "pyzmq", "cmake-build-extension"]
+ build-backend = "setuptools.build_meta"
+ 
+ [project]
+diff --git a/rosco/__init__.py b/rosco/__init__.py
+index e69de29..040a848 100644
+--- a/rosco/__init__.py
++++ b/rosco/__init__.py
+@@ -0,0 +1,30 @@
++import platform
++import os
++import sysconfig
++
++if platform.system() == "Windows":
++    lib_ext = ".dll"
++elif platform.system() == "Darwin":
++    lib_ext = ".dylib"
++else:
++    lib_ext = ".so"
++
++rosco_dir = os.path.dirname( os.path.abspath(__file__) )
++libname = "libdiscon"
++
++lib_path = [os.path.join(rosco_dir, "lib", libname+lib_ext), # pip installs (regular and editable)
++            os.path.join(rosco_dir, "..", "..", "local", "lib", libname+lib_ext), # WEIS library
++            os.path.join(os.path.dirname( sysconfig.get_path('stdlib') ), libname+lib_ext), # conda installs
++            os.path.join( sysconfig.get_path('platlib'), "rosco", "lib", libname+lib_ext), # system-wide pip installs
++            os.path.join( sysconfig.get_config_var("userbase"), "lib", "python", "site-packages", "rosco", "lib", libname+lib_ext), # system wide local
++            ]
++
++discon_lib_path = None
++for p in lib_path:
++    if os.path.exists(p):
++        discon_lib_path = str(p)
++        break
++
++if discon_lib_path is None:
++    raise Exception(f"Cannot find {libname+lib_ext} in {lib_path}")
++        
+diff --git a/rosco/lib/__init__.py b/rosco/lib/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/rosco/test/ROSCO_testing.py b/rosco/test/ROSCO_testing.py
+index f7967b0..8b4f61d 100644
+--- a/rosco/test/ROSCO_testing.py
++++ b/rosco/test/ROSCO_testing.py
+@@ -15,9 +15,9 @@ Run ROSCO and test against baseline results:
+ import numpy as np
+ import os
+ import platform
+-import glob
+ import multiprocessing as mp
+ 
++from rosco import discon_lib_path
+ from rosco.toolbox.ofTools.fast_io.FAST_reader import InputReader_OpenFAST
+ from rosco.toolbox.ofTools.case_gen.CaseGen_IEC import CaseGen_IEC
+ from rosco.toolbox.ofTools.case_gen.runFAST_pywrapper import runFAST_pywrapper_batch
+@@ -45,10 +45,7 @@ class ROSCO_testing():
+         self.Turbsim_exe = 'turbsim_single'     # name of turbsim executable
+         self.FAST_ver = 'OpenFAST'  # Fast version
+         # Path to ROSCO controller - default to ROSCO Toolbox submodule
+-        try:
+-            self.rosco_path = glob.glob(os.path.join(rosco_root, 'lib', 'libdiscon.*'))[0]
+-        except Exception:
+-            print('No compiled ROSCO version found, please provide ROSCO_testing.rosco_path.')
++        self.rosco_path = discon_lib_path
+         self.debug_level = 2        # debug level. 0 - no outputs, 1 - minimal outputs, 2 - all outputs
+         self.overwrite = False      # overwrite existing files? 
+         self.cores = 4              # number of cores to use
+@@ -559,7 +556,7 @@ if __name__=='__main__':
+         sfx = 'dylib'
+     else:
+         sfx = 'so'
+-    rt.rosco_path = os.path.join(rosco_root, 'lib', 'libdiscon.'+sfx)
++    rt.rosco_path = discon_lib_path
+ 
+     rt.debug_level = 2           # debug level. 0 - no outputs, 1 - minimal outputs, 2 - all outputs
+     rt.overwrite = True          # overwite fast sims?
+diff --git a/rosco/test/run_Testing.py b/rosco/test/run_Testing.py
+index 314759c..1a375bb 100644
+--- a/rosco/test/run_Testing.py
++++ b/rosco/test/run_Testing.py
+@@ -5,7 +5,7 @@ Run ROSCO lite testing scripts for controller functionality verification
+ import os
+ import glob
+ import ROSCO_testing
+-import importlib
++from rosco import discon_lib_path
+ 
+ os.system("taskset -p 0xffffffffffff %d" % os.getpid())
+ 
+@@ -52,12 +52,12 @@ def run_testing(turbine2test, testtype, rosco_binaries=[], discon_files=[], **kw
+     if turbine2test == 'NREL-5MW':
+         rt.Turbine_Class = 'I'
+         rt.Turbulence_Class = 'A'
+-        rt.FAST_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../Test_Cases/NREL-5MW')
++        rt.FAST_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../../Examples/Test_Cases/NREL-5MW')
+         rt.FAST_InputFile = 'NREL-5MW.fst'
+     elif turbine2test == 'IEA-15MW':
+         rt.Turbine_Class = 'I'
+         rt.Turbulence_Class = 'B'
+-        rt.FAST_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../Test_Cases/IEA-15-240-RWT-UMaineSemi')
++        rt.FAST_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../../Examples/Test_Cases/IEA-15-240-RWT-UMaineSemi')
+         rt.FAST_InputFile = 'IEA-15-240-RWT-UMaineSemi.fst'
+     else:
+         raise ValueError('{} is not an available turbine to test!'.format(turbine2test))
+@@ -106,8 +106,8 @@ if __name__ == "__main__":
+     testtype     = 'heavy'       # lite, heavy, binary-comp, discon-comp
+ 
+     # Only fill one of these if comparing controllers
+-    rosco_binaries = [glob.glob(os.path.join(this_dir,'..','..','lib','libdiscon.*'))[0]] # Differently named libdiscons to compare
+     discon_files = []   # Differently named DISCON.IN files to compare
+ 
+     # Run testing
+-    run_testing(turbine2test, testtype, rosco_binaries=rosco_binaries, discon_files=discon_files, **rt_kwargs)
++    run_testing(turbine2test, testtype, rosco_binaries=discon_lib_path,
++                discon_files=discon_files, **rt_kwargs)
+diff --git a/rosco/test/test_checkpoint.py b/rosco/test/test_checkpoint.py
+index c7d27a8..78c65db 100644
+--- a/rosco/test/test_checkpoint.py
++++ b/rosco/test/test_checkpoint.py
+@@ -11,11 +11,10 @@ import unittest
+ import numpy as np
+ 
+ # Python Modules
+-import os
+-import platform
+ from shutil import copyfile
+ 
+ # ROSCO toolbox modules
++from rosco import discon_lib_path
+ from rosco.toolbox.inputs.validation import load_rosco_yaml
+ from rosco.toolbox.ofTools.fast_io import output_processing 
+ from rosco.toolbox.ofTools.case_gen.CaseLibrary import set_channels
+@@ -39,18 +38,9 @@ class RegressionTesting(unittest.TestCase):
+         turbine_params = inps['turbine_params']
+         controller_params = inps['controller_params']
+ 
+-        # Set rosco_dll
+-        if platform.system() == 'Windows':
+-            sfx = 'dll'
+-        elif platform.system() == 'Darwin':
+-            sfx = 'dylib'
+-        else:
+-            sfx = 'so'
+-        rosco_dll = os.path.join(rosco_dir, 'lib', 'libdiscon.'+sfx)
+-
+         case_inputs = {}
+         case_inputs[('Fst', 'TMax')] = {'vals': [3.], 'group': 0}
+-        case_inputs[('ServoDyn', 'DLL_FileName')] = {'vals': [rosco_dll], 'group': 0}
++        case_inputs[('ServoDyn', 'DLL_FileName')] = {'vals': [discon_lib_path], 'group': 0}
+         case_inputs[('Fst', 'ChkptTime')] = {'vals': [1.], 'group': 1}
+         case_inputs[('Fst', 'OutFileFmt')] = {'vals': [2], 'group': 1}
+         case_inputs[('Fst', 'DT')] = {'vals': [0.025], 'group': 0}
+diff --git a/rosco/toolbox/control_interface.py b/rosco/toolbox/control_interface.py
+index 32cc709..1a92dec 100644
+--- a/rosco/toolbox/control_interface.py
++++ b/rosco/toolbox/control_interface.py
+@@ -9,19 +9,21 @@
+ # CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ # specific language governing permissions and limitations under the License.
+ 
++import ctypes
+ from ctypes import (
+     byref,
+     cdll,
+     POINTER,
+     c_float,
+     c_char_p,
+-    c_double,
++    #c_double,
+     create_string_buffer,
+     c_int32,
+     c_void_p,
+ )
+ import numpy as np
+-import platform, ctypes, os
++import platform
++import os
+ import zmq
+ import logging
+ from rosco.toolbox.ofTools.util.FileTools import load_yaml
+diff --git a/rosco/toolbox/ofTools/case_gen/run_FAST.py b/rosco/toolbox/ofTools/case_gen/run_FAST.py
+index 4850355..49061f5 100644
+--- a/rosco/toolbox/ofTools/case_gen/run_FAST.py
++++ b/rosco/toolbox/ofTools/case_gen/run_FAST.py
+@@ -6,25 +6,29 @@ This script is designed to work as-is if ROSCO is installed in 'develop' mode, i
+ Otherwise, the directories can be defined as attributes of the run_FAST_ROSCO
+ 
+ """
++import sys
++import os
++import platform
++#import pickle
++import collections.abc
++import numpy as np
++from rosco import discon_lib_path
++from rosco.toolbox import utilities as ROSCO_utilities
++from rosco.toolbox.inputs.validation import load_rosco_yaml
++
++from rosco.toolbox import controller as ROSCO_controller
++from rosco.toolbox import turbine as ROSCO_turbine
+ 
+ try:
+     from weis.aeroelasticse.runFAST_pywrapper   import runFAST_pywrapper_batch
+     in_weis = True
+-except:
++except Exception:
+     from rosco.toolbox.ofTools.case_gen.runFAST_pywrapper   import runFAST_pywrapper_batch
+     in_weis = False
+-from rosco.toolbox.ofTools.case_gen.CaseGen_IEC         import CaseGen_IEC
++#from rosco.toolbox.ofTools.case_gen.CaseGen_IEC         import CaseGen_IEC
+ from rosco.toolbox.ofTools.case_gen.CaseGen_General     import CaseGen_General
+ from rosco.toolbox.ofTools.case_gen import CaseLibrary as cl
+ from wisdem.commonse.mpi_tools              import MPI
+-import sys, os, platform, pickle
+-import collections.abc
+-import numpy as np
+-from rosco.toolbox import utilities as ROSCO_utilities
+-from rosco.toolbox.inputs.validation import load_rosco_yaml
+-
+-from rosco.toolbox import controller as ROSCO_controller
+-from rosco.toolbox import turbine as ROSCO_turbine
+ 
+ # Globals
+ this_dir        = os.path.dirname(os.path.abspath(__file__))
+@@ -132,23 +136,8 @@ class run_FAST_ROSCO():
+         case_inputs = self.wind_case_fcn(**self.wind_case_opts)
+         case_inputs.update(control_base_case)
+ 
+-        # Set up dll:
+-        #  OS platform
+-        if platform.system() == 'Windows':
+-            dll_ext = '.dll'
+-        elif platform.system() == 'Darwin':
+-            dll_ext = '.dylib'
+-        else:
+-            dll_ext = '.so'
+-
+-        # lib dir
+-        if not in_weis:  # in ROSCO
+-            dll_dir = os.path.join(self.rosco_dir, 'lib')
+-        else:
+-            dll_dir = os.path.join(self.rosco_dir,'../local/lib/')
+-        
+         if not self.rosco_dll:
+-            self.rosco_dll = os.path.join(dll_dir,'libdiscon'+dll_ext)
++            self.rosco_dll = discon_lib_path
+ 
+         case_inputs[('ServoDyn','DLL_FileName')] = {'vals': [self.rosco_dll], 'group': 0}
+ 
 diff --git a/setup.py b/setup.py
-index bda4a7c..4dcabf5 100644
+index bda4a7c..9f3c886 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -63,17 +63,34 @@ class CMakeBuildExt(build_ext):
-             except OSError:
-                 raise RuntimeError('Cannot find CMake executable')
-             
+@@ -1,106 +1,68 @@
+-# Copyright 2019 NREL
+-
+-# Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+-# this file except in compliance with the License. You may obtain a copy of the
+-# License at http://www.apache.org/licenses/LICENSE-2.0
+-
+-# Unless required by applicable law or agreed to in writing, software distributed
+-# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+-# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+-# specific language governing permissions and limitations under the License.
+-
+ import os
++import sys
++from pathlib import Path
+ import platform
+-import shutil
+-import sysconfig
+-from setuptools import setup, Extension
+-from setuptools.command.build_ext import build_ext
+-
+-#######
+-# This forces wheels to be platform specific
+-from setuptools.dist import Distribution
+-from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+-
+-class bdist_wheel(_bdist_wheel):
+-    def finalize_options(self):
+-        _bdist_wheel.finalize_options(self)
+-        self.root_is_pure = False
+-
+-class BinaryDistribution(Distribution):
+-    """Distribution which always forces a binary package with platform name"""
+-    def has_ext_modules(foo):
+-        return True
+-#######
+-
+-# For the CMake Extensions
+-this_directory = os.path.abspath(os.path.dirname(__file__))
+-build_dir = os.path.join(this_directory, "build")
+-
+-class CMakeExtension(Extension):
+-
+-    def __init__(self, name, sourcedir='', **kwa):
+-        Extension.__init__(self, name, sources=[], **kwa)
+-        self.sourcedir = os.path.abspath(sourcedir)
+-
+-class CMakeBuildExt(build_ext):
+-    
+-    def copy_extensions_to_source(self):
+-        newext = []
+-        for ext in self.extensions:
+-            if isinstance(ext, CMakeExtension): continue
+-            newext.append( ext )
+-        self.extensions = newext
+-        super().copy_extensions_to_source()
+-    
+-    def build_extension(self, ext):
+-        if not isinstance(ext, CMakeExtension):
+-            super().build_extension(ext)
+-
+-        else:
+-            # Ensure that CMake is present and working
+-            try:
+-                self.spawn(['cmake', '--version'])
+-            except OSError:
+-                raise RuntimeError('Cannot find CMake executable')
+-            
 -            # Refresh build directory
 -            #os.makedirs(localdir, exist_ok=True)
 -
@@ -17,34 +975,96 @@ index bda4a7c..4dcabf5 100644
 -            python_root = os.path.dirname( os.path.dirname( sysconfig.get_path('stdlib') ) )
 -            user_root = sysconfig.get_config_var("userbase")
 -            cmake_args += [f'-DCMAKE_PREFIX_PATH={python_root}']
-+            # Grab user-specified CMAKE_ARGS, which can be helpful, but is especially needed by conda packaging
-+            if "CMAKE_ARGS" in os.environ:
-+                cmake_args = [m for m in os.environ["CMAKE_ARGS"].split()]
-+                user_flag = True
-+            else:
-+                user_flag = False
-+                cmake_args = []
-+
-+            # Always build shared libraries
-+            cmake_args += ['-DBUILD_SHARED_LIBS=ON']
-+
-+            # Append fortran flags
-+            if not user_flag or "-DCMAKE_Fortran_FLAGS" not in os.environ["CMAKE_ARGS"]:
-+                cmake_args += ['-DCMAKE_Fortran_FLAGS=-ffree-line-length-0']
-+            else:
-+                for im, m in enumerate(cmake_args):
-+                    if m.find("-DCMAKE_Fortran_FLAGS") >= 0:
-+                        cmake_args[im] += ' -ffree-line-length-0' 
-+
-+            # Set if unset
-+            if not user_flag or "-DCMAKE_INSTALL_PREFIX" not in os.environ["CMAKE_ARGS"]:
-+                cmake_args += [f'-DCMAKE_INSTALL_PREFIX={this_directory}']
-+
-+            # Set if unset
-+            if not user_flag or "-DCMAKE_PREFIX_PATH" not in os.environ["CMAKE_ARGS"]:
-+                python_root = os.path.dirname( os.path.dirname( sysconfig.get_path('stdlib') ) )
-+                #user_root = sysconfig.get_config_var("userbase")
-+                cmake_args += [f'-DCMAKE_PREFIX_PATH={python_root}']
+-
+-            if platform.system() == 'Windows':
+-                if not "FC" in os.environ:
+-                    os.environ["FC"] = "gfortran"
+-                    
+-                if "gfortran" in os.environ["FC"].lower():
+-                    cmake_args += ['-G', 'MinGW Makefiles']
+-                elif self.compiler.compiler_type == 'msvc':
+-                    cmake_args += ['-DCMAKE_GENERATOR_PLATFORM=x64']
+-                else:
+-                    raise ValueError("Unable to find the system's Fortran compiler.")
+-
+-            self.build_temp = build_dir
+-
+-            # Need fresh build directory for CMake
+-            os.makedirs(self.build_temp, exist_ok=True)
+-
+-            self.spawn(['cmake', '-B', self.build_temp, '-S', ext.sourcedir] + cmake_args)
+-            self.spawn(['cmake', '--build', self.build_temp, '--target', 'install', '--config', 'Release'])
  
-             if platform.system() == 'Windows':
-                 if not "FC" in os.environ:
+-            
+-if __name__ == "__main__":
+-    # Start with clean build directory
+-    shutil.rmtree(build_dir, ignore_errors=True)
+-    
+-    setup(cmdclass={'bdist_wheel': bdist_wheel, 'build_ext': CMakeBuildExt},
+-          distclass=BinaryDistribution,
+-          ext_modules=[ CMakeExtension('rosco',os.path.join('rosco','controller')) ],
+-          )
+-    
++import cmake_build_extension
++import setuptools
++
++# Extra options passed to the CI/CD pipeline that uses cibuildwheel
++CIBW_CMAKE_OPTIONS = []
++if "CIBUILDWHEEL" in os.environ and os.environ["CIBUILDWHEEL"] == "1":
++    # The manylinux variant runs in Debian Stretch and it uses lib64 folder
++    if sys.platform == "linux":
++        CIBW_CMAKE_OPTIONS += ["-DCMAKE_INSTALL_LIBDIR=lib"]
++
++
++# Set Cmake options
++if "CMAKE_ARGS" in os.environ:
++    cmake_args = [m for m in os.environ["CMAKE_ARGS"].split()]
++    user_flag = True
++else:
++    user_flag = False
++    cmake_args = []
++
++# Always build shared libraries
++cmake_args += [f"-DPython3_ROOT_DIR={Path(sys.prefix)}",
++               "-DCALL_FROM_SETUP_PY:BOOL=ON",
++               "-DBUILD_SHARED_LIBS=ON"]
++
++# Append fortran flags
++if not user_flag or "-DCMAKE_Fortran_FLAGS" not in os.environ["CMAKE_ARGS"]:
++    cmake_args += ['-DCMAKE_Fortran_FLAGS=-ffree-line-length-0']
++else:
++    for im, m in enumerate(cmake_args):
++        if m.find("-DCMAKE_Fortran_FLAGS") >= 0:
++            cmake_args[im] += ' -ffree-line-length-0' 
++
++# Set if unset
++#if not user_flag or "-DCMAKE_INSTALL_PREFIX" not in os.environ["CMAKE_ARGS"]:
++#    cmake_args += [f'-DCMAKE_INSTALL_PREFIX={this_directory}/rosco']
++
++# Set if unset
++#if not user_flag or "-DCMAKE_PREFIX_PATH" not in os.environ["CMAKE_ARGS"]:
++#    python_root = os.path.dirname( os.path.dirname( sysconfig.get_path('stdlib') ) )
++#    cmake_args += [f'-DCMAKE_PREFIX_PATH={python_root}']
++
++if platform.system() == 'Windows':
++    if "FC" not in os.environ:
++        os.environ["FC"] = "gfortran"
++
++    #if "gfortran" in os.environ["FC"].lower():
++    #    cmake_args += ['-G', 'MinGW Makefiles']
++    #else:
++    #    cmake_args += ['-DCMAKE_GENERATOR_PLATFORM=x64']
++        
++setuptools.setup(
++    ext_modules=[
++        cmake_build_extension.CMakeExtension(
++            # This could be anything you like, it is used to create build folders
++            name="rosco",
++            install_prefix="rosco",
++            # Selects the folder where the main CMakeLists.txt is stored
++            source_dir=os.path.join('rosco','controller'),
++            cmake_configure_options=cmake_args + CIBW_CMAKE_OPTIONS,
++        ),
++    ],
++    cmdclass={'build_ext': cmake_build_extension.BuildExtension},
++)
