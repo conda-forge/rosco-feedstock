@@ -58,7 +58,8 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT  # [not win]
-    - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1  # [win]
+    #- if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1  # [win]
+    - if not exist %PREFIX%\\lib\\libdiscon.dll exit 1  # [win]
   imports:
     - rosco
 about:
