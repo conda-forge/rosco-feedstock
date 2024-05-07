@@ -20,7 +20,6 @@ build:
         # Want to use the conda pkg-config, not the mingw one
         - del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*  # [win]
         - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"  # [ win ]
-        #- set "FC=flang-new"  # [ win ]
         - {{ PYTHON }} -m pip install . --no-deps -vv
 
 
@@ -35,7 +34,7 @@ requirements:
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('fortran') }}              # [ not win ]
-        - {{ compiler('m2w64_fortran') }}        git pus# [ win ]
+        - {{ compiler('m2w64_fortran') }}        # [ win ]
         # The m2w64 linker and pkg-config is too fragile and frustrating to get it to work with zmq
         # Maybe when flang gets more stable this will work on windows.  For now, the windows build just won't have it
     host:
