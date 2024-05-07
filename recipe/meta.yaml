@@ -38,7 +38,6 @@ requirements:
         # The m2w64 linker and pkg-config is too fragile and frustrating to get it to work with zmq
         # Maybe when flang gets more stable this will work on windows.  For now, the windows build just won't have it
     host:
-        - compiler-rt                            # [win]
         - python
         - setuptools
         - cmake-build-extension
