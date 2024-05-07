@@ -1,5 +1,5 @@
 {% set name = "rosco" %}
-{% set version = "2.9.0" %}
+{% set version = "2.9.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://github.com/NREL/ROSCO/archive/v{{ version }}.tar.gz
-  sha256: eb7f6220207b8a07c9570fb64bab591906b0c19d73ac4c24bb8dca252722ca79
+  sha256: 99146a8183ce57ad476dc6729cbc6a82b8f5ed6de4c3541d3a1f62a23502cc5c
   patches:
     - init.patch
-    
+
 build:
-  number: 3
+  number: 0
   skip: true  # [py<39]
   #detect_binary_files_with_prefix: False  # [osx]
   #binary_relocation: False  # [osx]
@@ -26,8 +26,10 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}                 # [not win]
+    - {{ stdlib("c") }}                   # [not win]
     - {{ compiler('fortran') }}
     - {{ compiler('m2w64_c') }}           # [win]
+    - {{ stdlib("m2w64_c") }}             # [win]
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - python                              # [build_platform != target_platform]
     - cmake
