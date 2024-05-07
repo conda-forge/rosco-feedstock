@@ -20,6 +20,7 @@ build:
         # Want to use the conda pkg-config, not the mingw one
         - del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*  # [win]
         - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"  # [ win ]
+        - set "FC=flang-new"  # [ win ]
         - {{ PYTHON }} -m pip install . --no-deps -vv
 
 
@@ -33,7 +34,8 @@ requirements:
         - make                                   # [ not win ]
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
-        - {{ compiler('fortran') }}
+        - {{ compiler('fortran') }}              # [ not win ]
+        - {{ compiler('m2w64_fortran') }}        # [ win ]
         # The m2w64 linker and pkg-config is too fragile and frustrating to get it to work with zmq
         # Maybe when flang gets more stable this will work on windows.  For now, the windows build just won't have it
     host:
@@ -56,11 +58,19 @@ requirements:
         - {{ pin_compatible('numpy') }}
 
 test:
+    imports:
+        - rosco
+    source_files:
+        - Examples
+        - Examples/Test_Cases
+        - Examples/Test_Cases/NREL-5MW
+        - Examples/Tune_Cases
     commands:
         - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT  # [not win]
         - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1  # [win]
-    imports:
-        - rosco
+        - cd Examples
+        - python 04_simple_sim.py
+        - cd ..
         
 about:
     home: https://github.com/NREL/rosco
