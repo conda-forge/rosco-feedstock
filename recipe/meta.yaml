@@ -20,7 +20,7 @@ build:
         # Want to use the conda pkg-config, not the mingw one
         - del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*  # [win]
         - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"  # [ win ]
-        - set "FC=flang-new"  # [ win ]
+        #- set "FC=flang-new"  # [ win ]
         - {{ PYTHON }} -m pip install . --no-deps -vv
 
 
@@ -63,7 +63,7 @@ test:
     source_files:
         - Examples
         - Examples/example_inputs
-        - Examples/examples_out
+        - Examples/examples_outgit push
         - Examples/Test_Cases
         - Examples/Test_Cases/NREL-5MW
         - Examples/Tune_Cases
