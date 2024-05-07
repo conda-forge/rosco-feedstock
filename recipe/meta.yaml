@@ -61,7 +61,6 @@ test:
     source_files:
         - Examples
         - Examples/example_inputs
-        - Examples/examples_out
         - Examples/Test_Cases
         - Examples/Test_Cases/NREL-5MW
         - Examples/Tune_Cases
@@ -69,6 +68,7 @@ test:
         - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT  # [not win]
         - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1  # [win]
         - cd Examples
+        - python 01_turbine_model.py
         - python 04_simple_sim.py
         - cd ..
         
