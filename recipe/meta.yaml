@@ -31,10 +31,11 @@ requirements:
         - cmake-build-extension                  # [build_platform != target_platform]
         - pkg-config                             # [build_platform != target_platform]
         - make                                   # [ not win ]
-        - {{ stdlib('c') }}
-        - {{ compiler('c') }}
+        - {{ stdlib('c') }}                      # [ not win ]
+        - {{ compiler('c') }}                    # [ not win ]
         - {{ compiler('fortran') }}              # [ not win ]
         - {{ compiler('m2w64_fortran') }}        # [ win ]
+        - {{ compiler('m2w64_c') }}              # [ win ]
         # The m2w64 linker and pkg-config is too fragile and frustrating to get it to work with zmq
         # Maybe when flang gets more stable this will work on windows.  For now, the windows build just won't have it
     host:
