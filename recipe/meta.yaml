@@ -61,7 +61,7 @@ test:
     source_files:
         - Examples
         - Examples/example_inputs
-        - Examples/examples_outgit push
+        - Examples/examples_out
         - Examples/Test_Cases
         - Examples/Test_Cases/NREL-5MW
         - Examples/Tune_Cases
