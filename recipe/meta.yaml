@@ -11,7 +11,7 @@ source:
   patches:
     - numpy2.patch
 build:
-  number: 1
+  number: 2
   skip: true  # [py<39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
@@ -53,7 +53,7 @@ requirements:
     - pyzmq
     - scipy
     - wisdem >=3.5
-    - {{ pin_compatible('numpy') }}
+    - numpy
 
 test:
   imports:
