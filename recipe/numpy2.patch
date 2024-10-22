@@ -1,3 +1,23 @@
+diff --git a/rosco/toolbox/control_interface.py b/rosco/toolbox/control_interface.py
+index 488f438..b708d3d 100644
+--- a/rosco/toolbox/control_interface.py
++++ b/rosco/toolbox/control_interface.py
+@@ -20,6 +20,7 @@ from ctypes import (
+     create_string_buffer,
+     c_int32,
+     c_void_p,
++    wintypes,
+ )
+ import numpy as np
+ import platform
+@@ -258,6 +259,7 @@ class ControllerInterface:
+ 
+         if OS == "Windows":  # pragma: Windows
+             try:
++                ctypes.windll.kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
+                 _dlclose = ctypes.windll.kernel32.FreeLibrary
+                 dlclose = lambda handle: 0 if _dlclose(handle) else 1
+             except:
 diff --git a/rosco/toolbox/ofTools/fast_io/output_processing.py b/rosco/toolbox/ofTools/fast_io/output_processing.py
 index bafe84b..9eff782 100644
 --- a/rosco/toolbox/ofTools/fast_io/output_processing.py
