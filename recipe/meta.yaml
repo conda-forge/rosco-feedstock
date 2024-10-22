@@ -11,7 +11,7 @@ source:
     #patches:
     #  - init.patch
 build:
-  number: 0
+  number: 1
   skip: true  # [py<39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
