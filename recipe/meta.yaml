@@ -8,8 +8,8 @@ package:
 source:
   url: https://github.com/NREL/ROSCO/archive/v{{ version }}.tar.gz
   sha256: dcba67091ece65eceea3a9f77302ff488baeddf588857405781ca97835326ebf
-    patches:
-      - numpy2.patch
+  patches:
+    - numpy2.patch
 build:
   number: 1
   skip: true  # [py<39]
