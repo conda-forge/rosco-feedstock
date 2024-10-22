@@ -8,10 +8,10 @@ package:
 source:
   url: https://github.com/NREL/ROSCO/archive/v{{ version }}.tar.gz
   sha256: dcba67091ece65eceea3a9f77302ff488baeddf588857405781ca97835326ebf
-    #patches:
-    #  - init.patch
+    patches:
+      - numpy2.patch
 build:
-  number: 0
+  number: 1
   skip: true  # [py<39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
