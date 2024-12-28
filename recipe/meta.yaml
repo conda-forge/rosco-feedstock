@@ -1,5 +1,5 @@
 {% set name = "rosco" %}
-{% set version = "2.9.4" %}
+{% set version = "2.9.5" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/NREL/ROSCO/archive/v{{ version }}.tar.gz
-  sha256: dcba67091ece65eceea3a9f77302ff488baeddf588857405781ca97835326ebf
+  sha256: 4fd32df2fd30b82364b5a4f60718a14938656da4353c4565679752aab6da62d1
   patches:
     - numpy2.patch
 build:
-  number: 2
+  number: 0
   skip: true  # [py<39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
