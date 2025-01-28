@@ -52,12 +52,15 @@ requirements:
     - python
     - pyzmq
     - scipy
-    - wisdem >=3.5
+    - wisdem >=3.16
     - numpy
 
 test:
   imports:
     - rosco
+  requires:
+    - pip
+    - simpy
   source_files:
     - Examples
     - Examples/example_inputs
@@ -67,6 +70,7 @@ test:
   commands:
     - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT      # [not win]
     - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1      # [win]
+    - pip install marmot-agents openfast_io
     - cd Examples
     - python 01_turbine_model.py
     - python 04_simple_sim.py
