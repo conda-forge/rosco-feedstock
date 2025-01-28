@@ -1,18 +1,18 @@
 {% set name = "rosco" %}
-{% set version = "2.9.5" %}
+{% set version = "2.9.6" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/NREL/ROSCO/archive/v{{ version }}.tar.gz
-  sha256: 4fd32df2fd30b82364b5a4f60718a14938656da4353c4565679752aab6da62d1
-  patches:
-    - numpy2.patch
+  url: https://github.com/NREL/ROSCO/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 7ba0d22b5527413cf15d215b70ba42eea7479814292574b13c4c5eb61ae313bb
+  #patches:
+  #  - numpy2.patch
 build:
   number: 0
-  skip: true  # [py<39]
+  skip: true  # [py<=39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
   script:
@@ -52,12 +52,15 @@ requirements:
     - python
     - pyzmq
     - scipy
-    - wisdem >=3.5
+    - wisdem >=3.16
     - numpy
 
 test:
   imports:
     - rosco
+  requires:
+    - pip
+    - simpy
   source_files:
     - Examples
     - Examples/example_inputs
@@ -67,6 +70,7 @@ test:
   commands:
     - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT      # [not win]
     - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1      # [win]
+    - pip install marmot-agents openfast_io
     - cd Examples
     - python 01_turbine_model.py
     - python 04_simple_sim.py
