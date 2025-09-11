@@ -35,14 +35,15 @@ index 56a64ba..59ac43d 100644
  # List URLs that are relevant to your project
  #
 diff --git a/rosco/toolbox/__init__.py b/rosco/toolbox/__init__.py
-index 511e363..162e848 100644
+index 511e363..6d0462b 100644
 --- a/rosco/toolbox/__init__.py
 +++ b/rosco/toolbox/__init__.py
-@@ -1,7 +1,8 @@
+@@ -1,7 +1,9 @@
  # -*- coding: utf-8 -*-
  """Top-level package for ROSCO Repo."""
 -import pkg_resources
 +import importlib
++import importlib.metadata
  
  __author__ = """Nikhar J. Abbas and Daniel S. Zalkind"""
  __email__ = 'daniel.zalkind@nrel.gov'
