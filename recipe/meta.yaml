@@ -70,7 +70,7 @@ test:
   commands:
     - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT      # [not win]
     - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1      # [win]
-    - pip install marmot-agents openfast_io
+    - pip install orbit-nrel openfast_io
     - cd Examples
     - python 01_turbine_model.py
     - python 04_simple_sim.py
