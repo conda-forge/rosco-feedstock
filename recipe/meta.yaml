@@ -37,7 +37,7 @@ requirements:
     - {{ compiler('m2w64_c') }}                  # [ win ]
   host:
     - cmake-build-extension
-    - libpython                                  # [win]
+    #- libpython                                  # [win]
     - numpy
     - pip
     - python
