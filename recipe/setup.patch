@@ -11,7 +11,7 @@ index 84e8c83..fde0445 100644
    "Programming Language :: Fortran",
  ]
 diff --git a/setup.py b/setup.py
-index c17f954..b970f83 100644
+index c17f954..7d9c917 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -35,6 +35,10 @@ else:
@@ -25,3 +25,13 @@ index c17f954..b970f83 100644
  # Set if unset
  #if not user_flag or "-DCMAKE_INSTALL_PREFIX" not in os.environ["CMAKE_ARGS"]:
  #    cmake_args += [f'-DCMAKE_INSTALL_PREFIX={this_directory}/rosco']
+@@ -52,7 +56,8 @@ else:
+     #    cmake_args += ['-G', 'MinGW Makefiles']
+     #else:
+     #    cmake_args += ['-DCMAKE_GENERATOR_PLATFORM=x64']
+-        
++print(cmake_args)
++print(CIBW_CMAKE_OPTIONS)
+ setuptools.setup(
+     ext_modules=[
+         cmake_build_extension.CMakeExtension(
