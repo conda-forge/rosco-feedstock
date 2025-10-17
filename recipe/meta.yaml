@@ -11,7 +11,7 @@ source:
   #patches:
   #  - pyproj.patch
 build:
-  number: 0
+  number: 1
   skip: true  # [py<=39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
@@ -35,17 +35,18 @@ requirements:
     - {{ compiler('fortran') }}                  # [ not win ]
     - {{ compiler('m2w64_fortran') }}            # [ win ]
     - {{ compiler('m2w64_c') }}                  # [ win ]
-        # The m2w64 linker and pkg-config is too fragile and frustrating to get it to work with zmq
-        # Maybe when flang gets more stable this will work on windows.  For now, the windows build just won't have it
   host:
+    - cmake-build-extension
+    - libpython                                  # [win]
+    - numpy
+    - pip
     - python
     - setuptools
-    - cmake-build-extension
-    - pip
     - zeromq
   run:
     - control
     - matplotlib-base
+    - numpy
     - pandas
     - pyYAML
     - pyparsing
@@ -53,7 +54,6 @@ requirements:
     - pyzmq
     - scipy
     - wisdem >=3.16
-    - numpy
 
 test:
   imports:
