@@ -8,15 +8,15 @@ package:
 source:
   url: https://github.com/NREL/ROSCO/archive/refs/tags/v{{ version }}.tar.gz
   sha256: 6c6e2ffec5321d4752c67a4ab91ea2b5de85c88e9f04d5b936bbb6971f3ccb15
-  #patches:
-  #  - pyproj.patch
+  patches:
+    - setup.patch
 build:
   number: 1
   skip: true  # [py<=39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
   script:
-        # Want to use the conda pkg-config, not the mingw one
+      # Want to use the conda pkg-config, not the mingw one
     - del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*      # [win]
     - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"      # [ win ]
     - {{ PYTHON }} -m pip install . --no-deps -vv

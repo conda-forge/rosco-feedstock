@@ -1,0 +1,27 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 84e8c83..fde0445 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -38,6 +38,7 @@ classifiers = [  # Optional
+   "Programming Language :: Python :: 3.11",
+   "Programming Language :: Python :: 3.12",
+   "Programming Language :: Python :: 3.13",
++  "Programming Language :: Python :: 3.14",
+   "Programming Language :: Python :: 3 :: Only",
+   "Programming Language :: Fortran",
+ ]
+diff --git a/setup.py b/setup.py
+index c17f954..b970f83 100644
+--- a/setup.py
++++ b/setup.py
+@@ -35,6 +35,10 @@ else:
+         if m.find("-DCMAKE_Fortran_FLAGS") >= 0:
+             cmake_args[im] += ' -ffree-line-length-0' 
+ 
++# Catch errant conda flags
++if "-DMS_WIN64" in cmake_args:
++    cmake_args.pop( cmake_args.index( "-DMS_WIN64" ) )
++    
+ # Set if unset
+ #if not user_flag or "-DCMAKE_INSTALL_PREFIX" not in os.environ["CMAKE_ARGS"]:
+ #    cmake_args += [f'-DCMAKE_INSTALL_PREFIX={this_directory}/rosco']
