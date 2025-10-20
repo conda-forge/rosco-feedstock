@@ -11,7 +11,7 @@ source:
   patches:
     - setup.patch
 build:
-  number: 1
+  number: 2
   skip: true  # [py<=39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
@@ -37,6 +37,7 @@ requirements:
     - {{ compiler('m2w64_c') }}                  # [ win ]
   host:
     - cmake-build-extension
+    # For some reason adding this one adds odd cmake arguments that are unrecognized and errors
     #- libpython                                  # [win]
     - numpy
     - pip
@@ -44,7 +45,7 @@ requirements:
     - setuptools
     - zeromq
   run:
-    - control
+    - control   # [ not win or py<=312 ]
     - matplotlib-base
     - numpy
     - pandas
