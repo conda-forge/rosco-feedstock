@@ -11,7 +11,7 @@ source:
   patches:
     - setup.patch
 build:
-  number: 2
+  number: 3
   skip: true  # [py<=39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
@@ -45,7 +45,8 @@ requirements:
     - setuptools
     - zeromq
   run:
-    - control   # [ not win or py<=312 ]
+    # Windows folks have to add control package through pip otherwise fortran library clash
+    - control          # [ not win ]
     - matplotlib-base
     - numpy
     - pandas
@@ -69,9 +70,10 @@ test:
     - Examples/Test_Cases/NREL-5MW
     - Examples/Tune_Cases
   commands:
-    - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT      # [not win]
-    - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1      # [win]
+    - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT          # [ not win ]
+    - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1   # [ win ]
     - pip install orbit-nrel openfast_io
+    - pip install control                                # [ win ]
     - cd Examples
     - python 01_turbine_model.py
     - python 04_simple_sim.py
