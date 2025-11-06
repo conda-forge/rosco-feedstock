@@ -1,5 +1,5 @@
 {% set name = "rosco" %}
-{% set version = "2.10.1" %}
+{% set version = "2.10.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/NREL/ROSCO/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 6c6e2ffec5321d4752c67a4ab91ea2b5de85c88e9f04d5b936bbb6971f3ccb15
+  sha256: f545579730653048f289ed7e5768cd2ace87dbb8add8c2790943a49b9099f7bc
   patches:
     - setup.patch
 build:
-  number: 3
+  number: 0
   skip: true  # [py<=39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
@@ -72,8 +72,9 @@ test:
   commands:
     - test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT          # [ not win ]
     - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1   # [ win ]
-    - pip install orbit-nrel openfast_io
+    - pip install orbit-nrel openfast_io windIO jsonmerge
     - pip install control                                # [ win ]
+    - pip install dearpygui                              # [ not aarch64 ]
     - cd Examples
     - python 01_turbine_model.py
     - python 04_simple_sim.py
