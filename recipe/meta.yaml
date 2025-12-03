@@ -11,7 +11,7 @@ source:
   patches:
     - setup.patch
 build:
-  number: 0
+  number: 1
   skip: true  # [py<=39]
     #detect_binary_files_with_prefix: False  # [osx]
     #binary_relocation: False  # [osx]
@@ -30,11 +30,9 @@ requirements:
     - cmake-build-extension                      # [build_platform != target_platform]
     - pkg-config                                 # [build_platform != target_platform]
     - make                                       # [ not win ]
-    - {{ stdlib('c') }}                          # [ not win ]
-    - {{ compiler('c') }}                        # [ not win ]
-    - {{ compiler('fortran') }}                  # [ not win ]
-    - {{ compiler('m2w64_fortran') }}            # [ win ]
-    - {{ compiler('m2w64_c') }}                  # [ win ]
+    - {{ stdlib("c") }}
+    - {{ compiler("c") }}
+    - {{ compiler("fortran") }}
   host:
     - cmake-build-extension
     # For some reason adding this one adds odd cmake arguments that are unrecognized and errors
