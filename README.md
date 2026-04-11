@@ -3,13 +3,15 @@ About rosco-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/rosco-feedstock/blob/main/LICENSE.txt)
 
-Home: https://github.com/NREL/rosco
+Home: https://github.com/NatLabRockies/ROSCO
 
 Package license: Apache-2.0
 
 Summary: Reference OpenSource Wind Turbine Controller
 
-Development: https://github.com/NREL/rosco
+Development: https://github.com/NatLabRockies/ROSCO
+
+Documentation: https://rosco.readthedocs.io/
 
 NREL-developed wind turbine controller for bladed-style communications
 
