@@ -1,0 +1,117 @@
+schema_version: 1
+
+context:
+    version: "2.10.4"
+    name: rosco
+    build_number: 1
+
+package:
+    name: ${{ name }}
+    version: ${{ version }}
+
+source:
+    url: https://github.com/NatLabRockies/ROSCO/archive/v${{ version }}.tar.gz
+    sha256: 84c4d51df3383c596cd66646a6283cfb75f0afa283f434e5a7ae418f0efbb251
+    patches:
+        - setup.patch
+
+build:
+    number: ${{ build_number }}
+    skip:
+        - match(python, "<3.10")
+    script:
+        - if: win
+          then:
+              - del /s /q {{ BUILD_PREFIX }}\Library\mingw-w64\bin\pkg-config*
+              - set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%"
+        - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+        
+requirements:
+    build:
+        - if: not win
+          then:
+              - ${{ stdlib("c") }}
+              - ${{ compiler('c') }}
+              - ${{ compiler('fortran') }}
+              - make
+        - if: win
+          then:
+              - ${{ compiler('m2w64_c') }}
+              - ${{ compiler('m2w64_fortran') }}
+        - if: build_platform != target_platform
+          then:
+              - cross-python_${{ target_platform }}
+              - cmake
+              - cmake-build-extension
+              - pkg-config
+              - python
+    host:
+        - cmake-build-extension
+        - numpy
+        - pip
+        - python
+        - setuptools
+        - zeromq
+    run:
+        - if: not win
+          then:
+              - control
+        - matplotlib-base
+        - jsonmerge
+        - numpy
+        - openfast_io
+        - orbit-nrel
+        - pandas
+        - pyYAML
+        - pyparsing
+        - python
+        - pyzmq
+        - scipy
+        - wisdem >=3.16
+        - windIO
+
+tests:
+    - python:
+          imports:
+              - rosco                
+          pip_check: false
+    - script:
+          - if: not win
+            then:
+                test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT
+          - if: win
+            then:
+                if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1
+          - if: not aarch64
+            then:
+                pip install dearpygui
+          - if: win
+            then:
+                pip install control
+          - cd Examples && python 01_turbine_model.py && python 04_simple_sim.py && cd ..
+      requirements:
+          run:
+              - pip
+              - simpy
+      files:
+          source:
+              - Examples
+              - Examples/example_inputs
+              - Examples/Test_Cases
+              - Examples/Test_Cases/NREL-5MW
+              - Examples/Tune_Cases
+
+about:
+    homepage: https://github.com/NatLabRockies/ROSCO
+    license: Apache-2.0
+    license_file: LICENSE
+    summary: Reference OpenSource Wind Turbine Controller
+    description: NREL-developed wind turbine controller for bladed-style communications
+    repository: https://github.com/NatLabRockies/ROSCO
+    documentation: https://rosco.readthedocs.io
+
+extra:
+    recipe-maintainers:
+        - nikhar-abbas
+        - dzalkind
+        - gbarter
