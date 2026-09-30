@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: rosco
-  version: "2.10.5"
+  version: "2.10.6"
 
 package:
   name: ${{ name|lower }}
@@ -10,7 +10,7 @@ package:
 
 source:
   url: https://github.com/NREL/ROSCO/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 6d7d27c33a2aeddf695d4d69ab2a6913d06360176c0ae45018d12e75a5161abd
+  sha256: e00c1f5b0a46dfa5c3958711d9b511f9e2db2772d1da750a15dfb355e5e80340
   patches:
     - setup.patch
 
@@ -38,8 +38,7 @@ requirements:
         - ${{ stdlib('c') }}
         - ${{ compiler('c') }}
         - ${{ compiler('fortran') }}
-    - if: win
-      then:
+      else:
         - ${{ compiler('m2w64_fortran') }}
         - ${{ compiler('m2w64_c') }}
   host:
@@ -86,10 +85,9 @@ tests:
     script:
       - if: not win
         then: test -f ${PREFIX}/lib/libdiscon$SHLIB_EXT
-      - if: win
-        then: if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1
-      - if: win
-        then: pip install control
+        else:
+          - if not exist %LIBRARY_LIB%\\libdiscon.dll exit 1
+          - pip install control
       - if: not aarch64
         then: pip install dearpygui
       - cd Examples
